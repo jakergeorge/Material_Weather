@@ -1,0 +1,50 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#3F51B5">
+    <title>Weather</title>
+    
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link rel="stylesheet" type="text/css" href="css/custom.css"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  </head>
+  <body>
+    <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <div class="container">
+        <div class = 'row'/>
+            <div class="col s12 m8 l6 offset-l3 offset-m2">  
+                <h3>Weather</h3>      
+                <form action = "weather.php" method = "POST">
+                    <div class="input-field col s12">
+                        <i class="mdi-communication-location-on prefix"></i>
+                        <input type="text" id = "city" name = "city"  />
+                        <label for="city">Location</label>
+                    </div>
+                        <div id = "submit-button">
+                            <button id = 'submit' class="btn waves-effect waves-light orange" type="submit" name="action">Submit
+                            <i class="mdi-content-send right"></i>
+                            </button>
+                        </div>
+                        <!--<input type = "submit" class="btn waves-effect waves-light orang">-->
+
+                </form>
+            </div>
+                    
+          
+      </div>
+
+
+    
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+  </body>
+</html>
