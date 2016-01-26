@@ -4,6 +4,7 @@
     $my_new_location = implode('_', $my_location);
 
     //Get weather for desired location
+
     $cur_weather = file_get_contents('http://api.openweathermap.org/data/2.5/weather?q='.$my_new_location.'&APPID=5c6a5a74f8b5c172dc9e2ecc44d5c709');
     $cur_weather = json_decode($cur_weather);
     $forecast = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?q='.$my_new_location.'&cnt=5&APPID=5c6a5a74f8b5c172dc9e2ecc44d5c709');
@@ -11,6 +12,8 @@
 
     //Get name of the location
     $location = $cur_weather->{'name'};
+    $latitude = $cur_weather->{'coord'}->{'lat'};
+    $longitude = $cur_weather->{'coord'}->{'lon'};
 
     //Get id, description of current weather and temp
     $cur_id = $cur_weather->{'weather'}[0]->{'id'};
@@ -77,6 +80,19 @@
         <link href='http://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
 
         <title><?php echo $location.' Weather' ?></title>
+        <style>
+            .map {
+                margin:auto;
+                height: 80%;
+                width: 80%;
+                height: 200px;
+                width: 400px;
+            }
+        </style>
+        <script src="http://openlayers.org/en/v3.13.0/build/ol.js" type="text/javascript"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
+
     </head>
     <body>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -139,13 +155,48 @@
                         
                         </li>
                         <li>
-                          <div class="collapsible-header"><i class="mdi-maps-map"></i>Radar</div>
-                          <div class="collapsible-body" style="background-color: white"><p>Lorem ipsum dolor sit amet.</p></div>
+                          <div id = "radar1" class="collapsible-header"><i class="mdi-maps-map"></i>Radar</div>
+                          <div id="radar" class="collapsible-body" style="background-color: white">
+                              <div id="map" class="map"></div>
+
+
+                          </div>
                         </li>
                       </ul>
                 </div>
             </div>
         </div>
         </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var map;
+
+
+                    map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }),
+                            new ol.layer.Tile({
+                                title: 'OpenWeatherMap Precipitation',
+                                source: new ol.source.XYZ({
+                                    url: 'http://tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png',
+                                    attributions: [new ol.Attribution({html: '%s'})]
+                                }),
+                                opacity: 0.4
+                            })
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([<?php echo $longitude?>, <?php echo $latitude?>]),
+                            zoom: 10
+                        })
+                    });
+
+                $("#radar1").on('click', function () {
+                    map.updateSize()
+                });
+            });
+        </script>
     </body>
 </html>
